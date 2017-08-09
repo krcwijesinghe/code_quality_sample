@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using MobileBillingSample;
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests
@@ -38,17 +39,17 @@ namespace UnitTests
             var target = new BillingEngine();
             var bills = target.Generate(customers, cdrs);
 
-            Assert.AreEqual(3, bills.Count);
+            bills.Count.Should().Be(3);
 
             var bill1 = bills.FirstOrDefault(b => b.PhoneNumber == "077-7342345");
-            Assert.IsNotNull(bill1);
-            Assert.AreEqual("Customer Name 1", bill1.FullName);
-            Assert.AreEqual("Billing Address 1", bill1.BillingAddress);
+            bill1.Should().NotBeNull();
+            bill1.FullName.Should().Be("Customer Name 1");
+            bill1.BillingAddress.Should().Be("Billing Address 1");
 
             var bill2 = bills.FirstOrDefault(b => b.PhoneNumber == "077-2345434");
-            Assert.IsNotNull(bill2);
-            Assert.AreEqual("Customer Name 2", bill2.FullName);
-            Assert.AreEqual("Billing Address 2", bill2.BillingAddress);
+            bill2.Should().NotBeNull();
+            bill2.FullName.Should().Be("Customer Name 2");
+            bill2.BillingAddress.Should().Be("Billing Address 2");
         }
 
         [TestMethod]
@@ -101,16 +102,16 @@ namespace UnitTests
             var bills = target.Generate(customers, cdrs);
 
             var bill1 = bills.FirstOrDefault(b => b.PhoneNumber == "077-7342345");
-            Assert.IsNotNull(bill1);
-            Assert.AreEqual(2, bill1.CallList.Count);
+            bill1.Should().NotBeNull();
+            bill1.CallList.Count.Should().Be(2);
 
             var call1 = bill1.CallList.FirstOrDefault(c => c.StartTime == new DateTime(2017, 1, 2, 8, 30, 0));
-            Assert.IsNotNull(call1);
-            Assert.AreEqual(20, call1.DurationInSeconds);
+            call1.Should().NotBeNull();
+            call1.DurationInSeconds.Should().Be(20);
 
             var call2 = bill1.CallList.FirstOrDefault(c => c.StartTime == new DateTime(2017, 1, 4, 20, 30, 0));
-            Assert.IsNotNull(call2);
-            Assert.AreEqual(40, call2.DurationInSeconds);
+            call2.Should().NotBeNull();
+            call2.DurationInSeconds.Should().Be(40);
         }
 
         [TestMethod]
@@ -135,8 +136,8 @@ namespace UnitTests
 
             var target = new BillingEngine();
             var bills = target.Generate(customers, cdrs);
-            Assert.AreEqual(1, bills[0].CallList.Count);
-            Assert.AreEqual(6, bills[0].CallList[0].Charge);
+            bills[0].CallList.Count.Should().Be(1);
+            bills[0].CallList[0].Charge.Should().Be(6);
         }
 
         [TestMethod]
@@ -161,8 +162,8 @@ namespace UnitTests
 
             var target = new BillingEngine();
             var bills = target.Generate(customers, cdrs);
-            Assert.AreEqual(1, bills[0].CallList.Count);
-            Assert.AreEqual(3, bills[0].CallList[0].Charge);
+            bills[0].CallList.Count.Should().Be(1);
+            bills[0].CallList[0].Charge.Should().Be(3);
         }
 
         [TestMethod]
@@ -187,8 +188,8 @@ namespace UnitTests
 
             var target = new BillingEngine();
             var bills = target.Generate(customers, cdrs);
-            Assert.AreEqual(1, bills[0].CallList.Count);
-            Assert.AreEqual(6, bills[0].CallList[0].Charge);
+            bills[0].CallList.Count.Should().Be(1);
+            bills[0].CallList[0].Charge.Should().Be(6);
         }
 
         [TestMethod]
@@ -213,8 +214,8 @@ namespace UnitTests
 
             var target = new BillingEngine();
             var bills = target.Generate(customers, cdrs);
-            Assert.AreEqual(1, bills[0].CallList.Count);
-            Assert.AreEqual(1.5M, bills[0].CallList[0].Charge);
+            bills[0].CallList.Count.Should().Be(1);
+            bills[0].CallList[0].Charge.Should().Be(1.5M);
         }
 
         [TestMethod]
@@ -239,8 +240,8 @@ namespace UnitTests
 
             var target = new BillingEngine();
             var bills = target.Generate(customers, cdrs);
-            Assert.AreEqual(1, bills[0].CallList.Count);
-            Assert.AreEqual(10, bills[0].CallList[0].Charge);
+            bills[0].CallList.Count.Should().Be(1);
+            bills[0].CallList[0].Charge.Should().Be(10);
         }
 
         [TestMethod]
@@ -265,8 +266,8 @@ namespace UnitTests
 
             var target = new BillingEngine();
             var bills = target.Generate(customers, cdrs);
-            Assert.AreEqual(1, bills[0].CallList.Count);
-            Assert.AreEqual(4, bills[0].CallList[0].Charge);
+            bills[0].CallList.Count.Should().Be(1);
+            bills[0].CallList[0].Charge.Should().Be(4);
         }
 
         [TestMethod]
@@ -291,8 +292,8 @@ namespace UnitTests
 
             var target = new BillingEngine();
             var bills = target.Generate(customers, cdrs);
-            Assert.AreEqual(1, bills[0].CallList.Count);
-            Assert.AreEqual(4, bills[0].CallList[0].Charge);
+            bills[0].CallList.Count.Should().Be(1);
+            bills[0].CallList[0].Charge.Should().Be(4);
         }
 
         [TestMethod]
@@ -317,8 +318,8 @@ namespace UnitTests
 
             var target = new BillingEngine();
             var bills = target.Generate(customers, cdrs);
-            Assert.AreEqual(1, bills[0].CallList.Count);
-            Assert.AreEqual(2, bills[0].CallList[0].Charge);
+            bills[0].CallList.Count.Should().Be(1);
+            bills[0].CallList[0].Charge.Should().Be(2);
         }
 
         [TestMethod]
@@ -356,13 +357,13 @@ namespace UnitTests
             var target = new BillingEngine();
             var bills = target.Generate(customers, cdrs);
 
-            Assert.AreEqual(1, bills.Count);
-            Assert.AreEqual(3, bills[0].CallList.Count);
-            Assert.AreEqual(100, bills[0].Rental);
-            Assert.AreEqual(15, bills[0].TotalCallChareges);
-            Assert.AreEqual(0, bills[0].Discounts);
-            Assert.AreEqual(23, bills[0].Tax);
-            Assert.AreEqual(138, bills[0].BillAmount);
+            bills.Count.Should().Be(1);
+            bills[0].CallList.Count.Should().Be(3);
+            bills[0].Rental.Should().Be(100);
+            bills[0].TotalCallChareges.Should().Be(15);
+            bills[0].Discounts.Should().Be(0);
+            bills[0].Tax.Should().Be(23);
+            bills[0].BillAmount.Should().Be(138);
         }
 
         [TestMethod]
@@ -400,13 +401,13 @@ namespace UnitTests
             var target = new BillingEngine();
             var bills = target.Generate(customers, cdrs);
 
-            Assert.AreEqual(1, bills.Count);
-            Assert.AreEqual(3, bills[0].CallList.Count);
-            Assert.AreEqual(100, bills[0].Rental);
-            Assert.AreEqual(1101, bills[0].TotalCallChareges);
-            Assert.AreEqual(440.4M, bills[0].Discounts);
-            Assert.AreEqual(240.2M, bills[0].Tax);
-            Assert.AreEqual(1000.8M, bills[0].BillAmount);
+            bills.Count.Should().Be(1);
+            bills[0].CallList.Count.Should().Be(3);
+            bills[0].Rental.Should().Be(100);
+            bills[0].TotalCallChareges.Should().Be(1101);
+            bills[0].Discounts.Should().Be(440.4M);
+            bills[0].Tax.Should().Be(240.2M);
+            bills[0].BillAmount.Should().Be(1000.8M);
         }
     }
 
